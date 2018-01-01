@@ -10,23 +10,17 @@ import com.astro.service.AreaService;
 import com.astro.service.ShopCategoryService;
 import com.astro.service.ShopService;
 import com.astro.util.HttpServletRequestUtil;
-import com.astro.util.ImageUtil;
-import com.astro.util.PathUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.rmi.MarshalledObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +43,48 @@ public class shopManagementController {
     @Autowired
     private ShopCategoryService shopCategoryService;
 
+    @GetMapping("getShopList")
+    @ResponseBody
+    public Map<String ,Object> getShopList(HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        Long shopId = HttpServletRequestUtil.getLong(request,"shopId");
+        //TODO
+        PersonInfo personInfo = new PersonInfo();
+        personInfo.setUserId(1L);
+        List<Shop> shopList = new ArrayList<>();
+        try {
+           Shop shopCondition = new Shop();
+           shopCondition.setOwner(personInfo);
+           ShopExecution se = shopService.getShopList(shopCondition,);
+        }catch (){
+
+        }
+        return null;
+    }
+
+
+    @GetMapping("/getShopById")
+    @ResponseBody
+    public Map<String,Object> getShopById(HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        Long shopId = HttpServletRequestUtil.getLong(request,"shopId");
+        if (shopId >= -1){
+            try {
+                Shop shop = shopService.queryShopById(shopId);
+                List<Area> areaList = areaService.getAreaList();
+                map.put("shop",shop);
+                map.put("areaList",areaList);
+                map.put("success",true);
+            }catch (Exception e){
+                map.put("success",false);
+                map.put("errMsg",e.getMessage());
+            }
+        }else {
+            map.put("success",false);
+            map.put("errMsg","emptyShop");
+        }
+        return map;
+    }
 
     @GetMapping("/getShopInitInfo")
     @ResponseBody
@@ -76,12 +112,78 @@ public class shopManagementController {
         return map;
     }
 
+    @PostMapping("/modifyShop")
+    @ResponseBody
+    public Map<String,Object> modifyShop(HttpServletRequest request){
+
+          Map<String , Object> map =new HashMap<>();
+         //1.接收并转化相应的参数
+        String shopStr = HttpServletRequestUtil.getString(request,"shopStr");
+        //jackson
+        ObjectMapper mapper = new ObjectMapper();
+        Shop shop = null;
+
+        try {
+            shop = mapper.readValue(shopStr,Shop.class);
+        } catch (IOException e) {
+            map.put("success",false);
+            map.put("errMsg",e.getMessage());
+            log.error("------------------errMsg={}",e.getMessage());
+            return map;
+        }
+
+        //接收上传的图片
+        CommonsMultipartFile shopImg = null;
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver(
+                request.getSession().getServletContext()
+        );
+        if (resolver.isMultipart(request)){
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+            shopImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("shopImg");
+        }
+        //2.修改店铺
+        if(shop != null && shop.getShopId() !=null){
+            PersonInfo owner = new PersonInfo();
+            owner.setUserId(1L);
+            shop.setOwner(owner);
+            ShopExecution se = null;
+            try {
+                if (shopImg == null){
+                    se = shopService.modifyShop(shop,null,null);
+                }else {
+                    se = shopService.modifyShop(shop,shopImg.getInputStream(),shopImg.getOriginalFilename());
+                }
+                if (se.getState() == ShopStateEnum.SUCCESS.getState()){
+                    map.put("success",true);
+                }else{
+                    map.put("success",false);
+                    map.put("errMsg",se.getState());
+                    log.error("------------------errMsg={}",se.getState());
+                }
+            } catch (IOException e) {
+                map.put("success",false);
+                map.put("errMsg",e.getMessage());
+                log.error("------------------errMsg={}",e.getMessage());
+            }
+
+            return map;
+
+        }else {
+            map.put("success",false);
+            map.put("errMsg","请输入商铺信息");
+            log.error("------------------errMsg={}-----请输入商铺信息");
+            return map;
+        }
+
+        //3.返回结果
+    }
+
     @PostMapping("/registerShop")
     @ResponseBody
     public Map<String,Object> registerShop(HttpServletRequest request){
 
-          Map<String , Object> map =new HashMap<>();
-         //1.接收并转化相应的参数
+        Map<String , Object> map =new HashMap<>();
+        //1.接收并转化相应的参数
         String shopStr = HttpServletRequestUtil.getString(request,"shopStr");
         //jackson
         ObjectMapper mapper = new ObjectMapper();
@@ -136,7 +238,7 @@ public class shopManagementController {
         }else {
             map.put("success",false);
             map.put("errMsg","请输入商铺信息");
-            log.error("------------------errMsg={}-----请输入商铺信息");
+            log.error("------------------errMsg={}-----请输入商铺id");
             return map;
         }
 

@@ -7,16 +7,16 @@ import com.astro.enums.ShopStateEnum;
 import com.astro.exceptions.ShopOperationException;
 import com.astro.service.ShopService;
 import com.astro.util.ImageUtil;
+import com.astro.util.PageCalculator;
 import com.astro.util.PathUtil;
-import com.sun.javafx.scene.shape.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by astro on 2017/12/24.
@@ -26,6 +26,53 @@ public class ShopServiceImpl implements ShopService {
 
     @Autowired
     private ShopDao shopDao;
+
+    @Override
+    public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) {
+        int rowIndex = PageCalculator.caltulateRowIdex(pageIndex,pageSize);
+        List<Shop> shopList = shopDao.queryShopList(shopCondition,rowIndex,pageSize);
+        int shopCount = shopDao.queryShopCount(shopCondition);
+
+        ShopExecution se = new ShopExecution();
+        if (shopList != null){
+            se.setShopList(shopList);
+            se.setCount(shopCount);
+        }else {
+            se.setState(ShopStateEnum.INNER_ERROR.getState());
+        }
+        return se;
+    }
+
+    @Override
+    public Shop queryShopById(Long shopId) {
+        return shopDao.queryByShopId(shopId);
+    }
+
+    @Override
+    public ShopExecution modifyShop(Shop shop, InputStream shopImgInputStream, String fileName) throws IOException {
+        //1.判断是否要改图片
+        if (shop == null || shop.getShopId() == null){
+            return new ShopExecution(ShopStateEnum.NULL_SHOP);
+        }else{
+            if (shopImgInputStream != null && fileName != null && !"".equals(fileName)){
+                Shop tempShop = shopDao.queryByShopId(shop.getShopId());
+                if (tempShop.getShopImg() != null){
+                    ImageUtil.deleteFilePath(tempShop.getShopImg());
+                }
+                addShopImg(shop,shopImgInputStream,fileName);
+            }
+        }
+        //2.更新shop
+        shop.setLastEditTime(new Date());
+        int effNum = shopDao.updateShop(shop);
+        if (effNum <= 0){
+            return new ShopExecution(ShopStateEnum.INNER_ERROR);
+        }else {
+          shop = shopDao.queryByShopId(shop.getShopId());
+          return new ShopExecution(ShopStateEnum.SUCCESS,shop);
+        }
+
+    }
 
     @Override
     @Transactional

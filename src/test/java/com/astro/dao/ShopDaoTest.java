@@ -9,11 +9,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.net.SocketPermission;
 import java.util.Date;
-import java.util.Set;
-
-import static org.junit.Assert.*;
+import java.util.List;
 
 /**
  * Created by astro on 2017/12/23.
@@ -21,6 +18,44 @@ import static org.junit.Assert.*;
 public class ShopDaoTest extends BaseTest{
     @Autowired
     private ShopDao shopDao;
+
+
+    @Test
+    public void queryShopCount(){
+        Shop shop = new Shop();
+        Area area = new Area();
+        ShopCategory shopCategory = new ShopCategory();
+        shopCategory.setShopCategoryId(4L);
+        area.setAreaId(2);
+        shop.setArea(area);
+        shop.setShopCategory(shopCategory);
+        int a =shopDao.queryShopCount(shop);
+        System.out.println(a);
+    }
+
+    @Test
+    public void queryShopList(){
+         PersonInfo personInfo = new PersonInfo();
+         personInfo.setUserId(1L);
+         Shop shop = new Shop();
+         shop.setOwner(personInfo);
+         List<Shop> shopList = shopDao.queryShopList(shop,0,3);
+        System.out.println(shopList);
+    }
+
+
+
+    @Test
+    public void queryShopById(){
+        Long id = 40L;
+        Shop shop = shopDao.queryByShopId(id);
+        System.out.println(shop.toString());
+        System.out.println("areaId:"+shop.getArea().getAreaId());
+        System.out.println("areaName:"+shop.getArea().getAreaName());
+
+        System.out.println("shopCategoryId:"+shop.getShopCategory().getShopCategoryId());
+        System.out.println("shopCategoryName:"+shop.getShopCategory().getShopCategoryName());
+    }
 
     @Test
     public void insertShop() throws Exception {

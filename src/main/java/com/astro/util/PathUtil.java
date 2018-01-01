@@ -1,7 +1,5 @@
 package com.astro.util;
 
-import java.io.File;
-
 /**
  * Created by astro on 2017/12/24.
  */
@@ -26,5 +24,7 @@ public class PathUtil {
         return imagePath.replace("/", separator);
         //return imagePath;
     }
+
+
 
 }

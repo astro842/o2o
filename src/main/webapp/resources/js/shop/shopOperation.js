@@ -2,25 +2,59 @@
  * Created by astro on 2017/12/28.
  */
 $(function () {
-
+    var shopId = getQueryString("shopId");
+    var isEdit = shopId ? true : false;
     var initUrl = '/shopadmin/getShopInitInfo';
     var registerShopUrl = '/shopadmin/registerShop';
-    alert(initUrl);
-    getShopInitInfo();
+    //alert(initUrl);
+    var shopInfoUrl = '/shopadmin/getShopById?shopId='+shopId;
+    var editShopUrl = '/shopadmin/modifyShop';
+
+    if (!isEdit){
+        getShopInitInfo();
+    }else {
+        getShopInfo(shopId);
+    }
+
+    function getShopInfo(shopId) {
+        $.getJSON(shopInfoUrl,function (data) {
+           if (data.success) {
+               var shop = data.shop;
+               $('#shopName').val(shop.shopName);
+               $('#shopAddr').val(shop.shopAddr);
+               $('#shopDesc').val(shop.shopDesc);
+               $('#shopPhone').val(shop.phone);
+               var shopCategory = '<option dao-id = "' + shop.shopCategory.shopCategoryId + '" selected>'
+                   + shop.shopCategory.shopCategoryName + '</option>';
+               var tempArea = '';
+               data.areaList.map(function (item, index) {
+                   tempArea += '<option dao-id="' + item.areaId + '">'
+                       + item.areaName + '</option>';
+               });
+               $('#shopCategory').html(shopCategory);
+               $('#shopCategory').attr('disabled', 'disabled');
+               $('#areaCategory').html(tempArea);
+               $('#areaCategory').attr('dao-id', shop.areaId);
+           }
+        });
+
+    }
+
+
     function getShopInitInfo() {
         $.getJSON(initUrl, function (data) {
             if (data.success) {
                 var tempHtml = '';
                 var tempAreaHtml = '';
                 data.shopCategoryList.map(function (item, index) {
-                    tempHtml += '<option data-id="' + item.shopCategoryId + '">'
+                    tempHtml += '<option dao-id="' + item.shopCategoryId + '">'
                         + item.shopCategoryName + '</option>';
                 });
                 data.areaList.map(function (item, index) {
-                    tempAreaHtml += '<option data-id="' + item.areaId + '">'
+                    tempAreaHtml += '<option dao-id="' + item.areaId + '">'
                         + item.areaName + '</option>';
                 });
-                alert(tempHtml);
+                //alert(tempHtml);
                 $('#shopCategory').html(tempHtml);
                 $('#areaCategory').html(tempAreaHtml);
             }
@@ -30,6 +64,9 @@ $(function () {
         $('#submit').click(function () {
 
             var shop = {};
+            if (isEdit){
+                shop.shopId=shopId;
+            }
             shop.shopName = $('#shopName').val();
             shop.shopAddr = $('#shopAddr').val();
             shop.shopDesc = $('#shopDesc').val();
@@ -50,7 +87,7 @@ $(function () {
             formData.append('shopStr',JSON.stringify(shop));
 
             $.ajax({
-                url : registerShopUrl,
+                url : (isEdit ? editShopUrl : registerShopUrl),
                 type : 'POST',
                 data : formData,
                 contentType : false,

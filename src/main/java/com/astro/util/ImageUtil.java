@@ -1,6 +1,5 @@
 package com.astro.util;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.slf4j.Logger;
@@ -87,5 +86,18 @@ public class ImageUtil {
                 ImageIO.read(new File(basePath+"/watermark.jpg")),0.25f).outputQuality(0.8f).toFile(addr);
         //System.out.println(System.getProperty("file.separator"));
 
+    }
+
+    public static void  deleteFilePath(String storePath){
+        File filtPath = new File(PathUtil.getImgBasePath()+storePath);
+        if (filtPath.exists()){
+            if (filtPath.isDirectory()){
+                File files[] =filtPath.listFiles();
+                for (int i= 0;i<files.length;i++){
+                    files[i].delete();
+                }
+            }
+            filtPath.delete();
+        }
     }
 }
