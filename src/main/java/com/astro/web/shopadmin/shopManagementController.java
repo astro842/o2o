@@ -55,7 +55,7 @@ public class shopManagementController {
         try {
            Shop shopCondition = new Shop();
            shopCondition.setOwner(personInfo);
-           ShopExecution se = shopService.getShopList(shopCondition,);
+           ShopExecution se = shopService.getShopList(shopCondition, );
         }catch (){
 
         }
