@@ -102,7 +102,7 @@
                 and s.enable_status = #{shopCondition.enableStatus}
             </if>
             <if test="shopCondition.owner != null and shopCondition.owner.userId != null">
-                and s.user_id = #{shopCondition.owner.userId}
+                and s.owner_id = #{shopCondition.owner.userId}
             </if>
             AND s.shop_category_id = sc.shop_category_id
             AND s.area_id = a.area_id

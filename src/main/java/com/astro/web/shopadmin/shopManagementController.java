@@ -11,6 +11,7 @@ import com.astro.service.ShopCategoryService;
 import com.astro.service.ShopService;
 import com.astro.util.HttpServletRequestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,27 +44,61 @@ public class shopManagementController {
     @Autowired
     private ShopCategoryService shopCategoryService;
 
-    @GetMapping("getShopList")
-    @ResponseBody
-    public Map<String ,Object> getShopList(HttpServletRequest request){
-        Map<String,Object> map = new HashMap<>();
-        Long shopId = HttpServletRequestUtil.getLong(request,"shopId");
-        //TODO
-        PersonInfo personInfo = new PersonInfo();
-        personInfo.setUserId(1L);
-        List<Shop> shopList = new ArrayList<>();
-        try {
-           Shop shopCondition = new Shop();
-           shopCondition.setOwner(personInfo);
-           ShopExecution se = shopService.getShopList(shopCondition, );
-        }catch (){
 
+    @GetMapping("/getshopmanagementinfo")
+    @ResponseBody
+    public Map<String,Object> getShopManagementInfo(HttpServletRequest request){
+
+        Map<String,Object> map = new HashMap<>();
+        long shopId = HttpServletRequestUtil.getLong(request,"shopId");
+        if (shopId <= 0){
+            Object currentShop = request.getSession().getAttribute("currentShop");
+            if (currentShop == null){
+                map.put("redirect",true);
+                map.put("url","/shopadmin/shop/shoplist");
+            }else {
+                Shop shop = (Shop) currentShop;
+                map.put("redirect",false);
+                map.put("shopId",((Shop) currentShop).getShopId());
+            }
+        }else {
+            Shop shop = new Shop();
+            shop.setShopId(shopId);
+            request.getSession().setAttribute("currentShop",shop);
+            map.put("redirect",false);
         }
-        return null;
+          return map;
     }
 
 
-    @GetMapping("/getShopById")
+
+    @GetMapping("/getshoplist")
+    @ResponseBody
+    public Map<String ,Object> getShopList(HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        //TODO
+        PersonInfo user = new PersonInfo();
+        user.setUserId(1L);
+        user.setName("小明");
+        request.getSession().setAttribute("user",user);
+        user = (PersonInfo)request.getSession().getAttribute("user");
+        try {
+           Shop shopCondition = new Shop();
+           shopCondition.setOwner(user);
+           ShopExecution se = shopService.getShopList(shopCondition,1,100 );
+            map.put("shopList",se.getShopList());
+            map.put("user",user);
+            map.put("success",true);
+        }catch (Exception e){
+            map.put("success",false);
+            map.put("errMsg",e.getMessage());
+            log.debug("没有shop？？？？？？");
+        }
+        return map;
+    }
+
+
+    @GetMapping("/getshopbyid")
     @ResponseBody
     public Map<String,Object> getShopById(HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
@@ -86,7 +121,7 @@ public class shopManagementController {
         return map;
     }
 
-    @GetMapping("/getShopInitInfo")
+    @GetMapping("/getshopinitinfo")
     @ResponseBody
     public Map<String,Object> getShopInitInfo(){
         Map<String,Object> map = new HashMap<>();
@@ -112,7 +147,7 @@ public class shopManagementController {
         return map;
     }
 
-    @PostMapping("/modifyShop")
+    @PostMapping("/modifyshop")
     @ResponseBody
     public Map<String,Object> modifyShop(HttpServletRequest request){
 
@@ -178,7 +213,7 @@ public class shopManagementController {
         //3.返回结果
     }
 
-    @PostMapping("/registerShop")
+    @PostMapping("/registershop")
     @ResponseBody
     public Map<String,Object> registerShop(HttpServletRequest request){
 

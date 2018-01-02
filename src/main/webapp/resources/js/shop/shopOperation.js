@@ -4,11 +4,11 @@
 $(function () {
     var shopId = getQueryString("shopId");
     var isEdit = shopId ? true : false;
-    var initUrl = '/shopadmin/getShopInitInfo';
-    var registerShopUrl = '/shopadmin/registerShop';
+    var initUrl = '/shopadmin/getshopinitinfo';
+    var registerShopUrl = '/shopadmin/registershop';
     //alert(initUrl);
-    var shopInfoUrl = '/shopadmin/getShopById?shopId='+shopId;
-    var editShopUrl = '/shopadmin/modifyShop';
+    var shopInfoUrl = '/shopadmin/getshopbyId?shopId='+shopId;
+    var editShopUrl = '/shopadmin/modifyshop';
 
     if (!isEdit){
         getShopInitInfo();
