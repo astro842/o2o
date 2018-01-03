@@ -49,7 +49,7 @@ $(function () {
 
       function goShop(status,id) {
          if (status == 1){
-             return '<a href="/shopadmin/getshopmanagementinfo?shopId='+id+'">进入</a>';
+             return '<a href="/shopadmin/shopmanagement?shopId='+id+'">进入</a>';
          } else {
              return '';
          }

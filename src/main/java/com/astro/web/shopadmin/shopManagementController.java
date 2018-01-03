@@ -55,7 +55,7 @@ public class shopManagementController {
             Object currentShop = request.getSession().getAttribute("currentShop");
             if (currentShop == null){
                 map.put("redirect",true);
-                map.put("url","/shopadmin/shop/shoplist");
+                map.put("url","/shopadmin/shoplist");
             }else {
                 Shop shop = (Shop) currentShop;
                 map.put("redirect",false);
