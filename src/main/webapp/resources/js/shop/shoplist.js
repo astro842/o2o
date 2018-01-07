@@ -26,7 +26,6 @@ $(function () {
           var html = "";
           data.map(function (item,index) {
 
-
                   html += '<div class="row row-shop"><div class="col-40">'
                        + item.shopName +'</div><div class="col-40">'
                        + shopStatus(item.enableStatus) +'</div><div class="col-20">'

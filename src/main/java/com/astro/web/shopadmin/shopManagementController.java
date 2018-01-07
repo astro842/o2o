@@ -71,7 +71,6 @@ public class shopManagementController {
     }
 
 
-
     @GetMapping("/getshoplist")
     @ResponseBody
     public Map<String ,Object> getShopList(HttpServletRequest request){
@@ -280,18 +279,5 @@ public class shopManagementController {
         //3.返回结果
     }
 
-//    private static void inputStream2File(InputStream is , File file){
-//
-//        FileOutputStream os = null;
-//        try {
-//            os = new FileOutputStream(file);
-//            int bytesRead = 0;
-//            byte[] buffer = new byte[1024];
-//            while ((bytesRead = is.read(buffer))!= -1){
-//              os.write(buffer,0,bytesRead);
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException();
-//        }
-//    }
+
 }
