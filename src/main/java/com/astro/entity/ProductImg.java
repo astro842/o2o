@@ -1,10 +1,13 @@
 package com.astro.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * Created by astro on 2017/12/20.
  */
+@Data
 public class ProductImg {
 
     private Long productImgId;
@@ -14,52 +17,5 @@ public class ProductImg {
     private Date createTime;
     private Long productId;
 
-    public Long getProductImgId() {
-        return productImgId;
-    }
-
-    public void setProductImgId(Long productImgId) {
-        this.productImgId = productImgId;
-    }
-
-    public String getImgAddr() {
-        return imgAddr;
-    }
-
-    public void setImgAddr(String imgAddr) {
-        this.imgAddr = imgAddr;
-    }
-
-    public String getImgDesc() {
-        return imgDesc;
-    }
-
-    public void setImgDesc(String imgDesc) {
-        this.imgDesc = imgDesc;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
 
 }
