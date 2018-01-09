@@ -10,13 +10,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by astro on 2018/1/8.
  */
-public class ProductDaoTest extends BaseTest{
+public class ProductDaoTest extends BaseTest {
 
     @Autowired
     private ProductDao productDao;
@@ -33,7 +34,7 @@ public class ProductDaoTest extends BaseTest{
         product.setProductDesc("haiahi");
         product.setPriority(1);
 
-        Shop shop =new Shop();
+        Shop shop = new Shop();
         shop.setShopId(41l);
         product.setShop(shop);
 
@@ -42,7 +43,18 @@ public class ProductDaoTest extends BaseTest{
         product.setProductCategory(productCategory);
 
         int i = productDao.insertProduct(product);
-        Assert.assertEquals(1,i);
+        Assert.assertEquals(1, i);
+    }
+
+    @Test
+    public void queryProductList() throws Exception {
+        Product productCondition =new Product();
+        ProductCategory pc =new ProductCategory();
+        productCondition.setProductCategory(pc);
+        List<Product> products = productDao.queryProductList(productCondition, 0, 2);
+        int i = productDao.queryProductCount(productCondition);
+        System.out.println(products);
+        System.out.println("i="+i);
     }
 
 }

@@ -4,7 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.astro.dao.ProductDao">
 
-    <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
+    <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productId"
+            keyColumn="product_id">
 	  INSERT INTO
 		tb_product(product_name,product_desc,img_addr,
 		normal_price,promotion_price,priority,create_time,
@@ -16,5 +17,49 @@
 		#{lastEditTime},#{enableStatus},#{productCategory.productCategoryId},
 		#{shop.shopId})
     </insert>
+
+    <select id="queryProductList" resultType="Product">
+        SELECT
+        product_name,product_id,product_desc,img_addr,normal_price,promotion_price,priority,create_time,
+        last_edit_time,enable_status,product_category_id,shop_id
+        FROM
+        tb_product
+        <where>
+            <if test="productCondition.shop != null and productCondition.shop.shopId != null">
+                shop_id = #{productCondition.shop.shopId}
+            </if>
+            <if test="productCondition.productCategory != null and productCondition.productCategory.productCategoryId != null">
+                and product_category_id = #{productCondition.productCategory.productCategoryId}
+            </if>
+            <if test="productCondition.productCategory.productCategoryName!= null">
+                and product_name LIKE '%${productCondition.productName}%'
+            </if>
+            <if test="productCondition.enableStatus != null">
+                and enable_status = #{productConditon.enableStatus}
+            </if>
+        </where>
+        ORDER BY
+        priority DESC
+        LIMIT #{rowIndex},#{pageSize}
+    </select>
+
+    <select id="queryProductCount" resultType="int">
+        SELECT
+        count(1) FROM tb_product
+        <where>
+            <if test="productCondition.shop != null and productCondition.shop.shopId != null">
+                shop_id = #{productCondition.shop.shopId}
+            </if>
+            <if test="productCondition.productCategory != null and productCondition.productCategory.productCategoryId != null">
+                and product_category_id = #{productCondition.productCategory.productCategoryId}
+            </if>
+            <if test="productCondition.productCategory.productCategoryName!= null">
+                and product_name LIKE '%${productCondition.productName}%'
+            </if>
+            <if test="productCondition.enableStatus != null">
+                and enable_status = #{productConditon.enableStatus}
+            </if>
+        </where>
+    </select>
 
 </mapper>
