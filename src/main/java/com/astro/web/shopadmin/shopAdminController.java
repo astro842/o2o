@@ -12,21 +12,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "shopadmin",method = RequestMethod.GET)
 public class shopAdminController {
 
+    //url返回的都是html页面 然后通过对应的js获取后台数据
+
 
     @RequestMapping("/shopoperation")
     public String shopOperation(){
         return "shop/shopOperation";
     }
-
+    //商铺列表页面
     @RequestMapping("/shoplist")
     public String shopList(){
         return "shop/shoplist";
     }
-
+    //商铺管理页面
     @RequestMapping("/shopmanagement")
     public String shopManagement(){return "shop/shopmanage";
     }
-
+    //类别管理页面
     @GetMapping("/productcategorymanagement")
     public String productCategoryManage(){
         return "shop/productcategorymanage";

@@ -1,5 +1,6 @@
 package com.astro.util;
 
+import com.astro.dto.ImageHolder;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.slf4j.Logger;
@@ -36,9 +37,9 @@ public class ImageUtil {
 
     }
 
-    public static String generateThumBnail(InputStream thumbnailInputStream,String fileName, String targetAddr) throws IOException {
+    public static String generateThumBnail(ImageHolder thumbnail, String targetAddr) throws IOException {
           String realFileName = getRandomFileName();
-          String extension =  getFileExtension(fileName);
+          String extension =  getFileExtension(thumbnail.getImageName());
           makeDirPath(targetAddr);
           String relativeAddr = targetAddr + realFileName + extension;
           logger.info("relativeAddr={}",relativeAddr);
@@ -46,7 +47,7 @@ public class ImageUtil {
           File dest = new File(lastAddr);
         logger.info("dest={}",dest);
           try {
-              Thumbnails.of(thumbnailInputStream).size(200,200).watermark(Positions.BOTTOM_RIGHT,
+              Thumbnails.of(thumbnail.getImage()).size(200,200).watermark(Positions.BOTTOM_RIGHT,
                       ImageIO.read(new File(basePath+"/watermark.jpg")),0.25f)
                       .outputQuality(0.8f).toFile(dest);
           }catch (IOException e){
@@ -54,6 +55,26 @@ public class ImageUtil {
                throw new RuntimeException(e.toString());
           }
           return relativeAddr;
+    }
+
+    public static String generateNormalImg(ImageHolder thumbnail, String targetAddr) throws IOException {
+        String realFileName = getRandomFileName();
+        String extension =  getFileExtension(thumbnail.getImageName());
+        makeDirPath(targetAddr);
+        String relativeAddr = targetAddr + realFileName + extension;
+        logger.info("relativeAddr={}",relativeAddr);
+        String lastAddr = PathUtil.getImgBasePath() + relativeAddr;
+        File dest = new File(lastAddr);
+        logger.info("dest={}",dest);
+        try {
+            Thumbnails.of(thumbnail.getImage()).size(337,640).watermark(Positions.BOTTOM_RIGHT,
+                    ImageIO.read(new File(basePath+"/watermark.jpg")),0.25f)
+                    .outputQuality(0.8f).toFile(dest);
+        }catch (IOException e){
+            logger.error(e.toString());
+            throw new RuntimeException(e.toString());
+        }
+        return relativeAddr;
     }
 
     //创建涉及的路径  \8\2017122417293270963.jpg

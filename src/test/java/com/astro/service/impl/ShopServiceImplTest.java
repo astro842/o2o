@@ -1,6 +1,7 @@
 package com.astro.service.impl;
 
 import com.astro.BaseTest;
+import com.astro.dto.ImageHolder;
 import com.astro.dto.ShopExecution;
 import com.astro.entity.Area;
 import com.astro.entity.PersonInfo;
@@ -49,8 +50,8 @@ public class ShopServiceImplTest extends BaseTest{
         shop.setShopName("修改了的shopName");
         File shopImg = new File("E:/upload/o2o/p2.jpg");
         InputStream is = new FileInputStream(shopImg);
-
-        ShopExecution shopExecution = shopService.modifyShop(shop, is, shopImg.getName());
+        ImageHolder imageHolder = new ImageHolder(shopImg.getName(),is);
+        ShopExecution shopExecution = shopService.modifyShop(shop,imageHolder);
         System.out.println(shopExecution.getShop().toString());
     }
 
@@ -83,7 +84,8 @@ public class ShopServiceImplTest extends BaseTest{
 
         File shopImg = new File("E:/upload/o2o/p1.jpg");
         InputStream is = new FileInputStream(shopImg);
-        ShopExecution se = shopService.addShop(shop, is ,shopImg.getName());
+        ImageHolder imageHolder = new ImageHolder(shopImg.getName(),is);
+        ShopExecution se = shopService.addShop(shop, imageHolder);
         Assert.assertEquals(ShopStateEnum.CHECK.getState(),se.getState());
 
 

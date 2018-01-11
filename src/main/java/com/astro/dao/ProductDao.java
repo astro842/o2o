@@ -17,4 +17,6 @@ public interface ProductDao {
                                    @Param("pageSize") int pageSize);
     //查询总数
     int queryProductCount(@Param("productCondition") Product productCondition);
+    //删除productCategory时， 把关联的product的 category更新为null
+    int updateProductCategoryToNull(long productCategoryId);
 }

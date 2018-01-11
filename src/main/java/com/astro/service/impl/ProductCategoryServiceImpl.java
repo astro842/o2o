@@ -1,7 +1,9 @@
 package com.astro.service.impl;
 
 import com.astro.dao.ProductCategoryDao;
+import com.astro.dao.ProductDao;
 import com.astro.dto.ProductCagegoryExecution;
+import com.astro.entity.Product;
 import com.astro.entity.ProductCategory;
 import com.astro.enums.ProductCategoryStateEnum;
 import com.astro.exceptions.ProductCategoryOperationException;
@@ -21,6 +23,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Autowired
     private ProductCategoryDao productCategoryDao;
 
+    @Autowired
+    private ProductDao productDao;
+
     @Override
     public List<ProductCategory> getProductCategoryList(long shopId) {
         return productCategoryDao.queryProductCategoryList(shopId);
@@ -30,6 +35,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public ProductCagegoryExecution batchAddProductCategory(List<ProductCategory> productCategoryList) throws ProductCategoryOperationException {
         if (productCategoryList != null && productCategoryList.size() > 0) {
             try {
+
                 int effNum = productCategoryDao.batchInsertProductCategory(productCategoryList);
                 if (effNum <= 0) {
                     throw new ProductCategoryOperationException("商店类别创建失败");
@@ -48,16 +54,25 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     @Transactional
     public ProductCagegoryExecution deleteProductCategory(long productCategoryId, long shopId) throws ProductCategoryOperationException {
+        //解除product中与category的关联
+        try {
+            int i = productDao.updateProductCategoryToNull(productCategoryId);
+            if (i <0){
+                throw new ProductCategoryOperationException("商品类别删除-类别更新失败");
+            }
+        }catch (ProductCategoryOperationException e){
+            throw new ProductCategoryOperationException("deletePC err1:" + e.getMessage());
+        }
 
         try {
             int effNum = productCategoryDao.deleteProductCategory(productCategoryId, shopId);
             if (effNum <= 0) {
-                throw new ProductCategoryOperationException("店铺类别删除失败");
+                throw new ProductCategoryOperationException("商品类别删除失败");
             } else {
                 return new ProductCagegoryExecution(ProductCategoryStateEnum.SUCCESS);
             }
         } catch (ProductCategoryOperationException e) {
-            throw new ProductCategoryOperationException("deletePC err:" + e.getMessage());
+            throw new ProductCategoryOperationException("deletePC err2:" + e.getMessage());
         }
 
     }

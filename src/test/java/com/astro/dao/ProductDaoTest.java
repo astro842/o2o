@@ -1,6 +1,7 @@
 package com.astro.dao;
 
 import com.astro.BaseTest;
+import com.astro.dto.ProductExcution;
 import com.astro.entity.Product;
 import com.astro.entity.ProductCategory;
 import com.astro.entity.Shop;
@@ -55,6 +56,13 @@ public class ProductDaoTest extends BaseTest {
         int i = productDao.queryProductCount(productCondition);
         System.out.println(products);
         System.out.println("i="+i);
+    }
+
+    @Test
+    public void updateProductCategoryToNull() throws Exception{
+
+        int i = productDao.updateProductCategoryToNull(1);
+        assertEquals(2,i);
     }
 
 }

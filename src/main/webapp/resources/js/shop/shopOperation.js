@@ -7,7 +7,7 @@ $(function () {
     var initUrl = '/shopadmin/getshopinitinfo';
     var registerShopUrl = '/shopadmin/registershop';
     //alert(initUrl);
-    var shopInfoUrl = '/shopadmin/getshopbyId?shopId='+shopId;
+    var shopInfoUrl = '/shopadmin/getshopbyid?shopId='+shopId;
     var editShopUrl = '/shopadmin/modifyshop';
 
     if (!isEdit){

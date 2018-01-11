@@ -1,5 +1,6 @@
 package com.astro.web.shopadmin;
 
+import com.astro.dto.ImageHolder;
 import com.astro.dto.ShopExecution;
 import com.astro.entity.Area;
 import com.astro.entity.PersonInfo;
@@ -183,9 +184,10 @@ public class shopManagementController {
             ShopExecution se = null;
             try {
                 if (shopImg == null){
-                    se = shopService.modifyShop(shop,null,null);
+                    se = shopService.modifyShop(shop,null);
                 }else {
-                    se = shopService.modifyShop(shop,shopImg.getInputStream(),shopImg.getOriginalFilename());
+                    ImageHolder imageHolder = new ImageHolder(shopImg.getOriginalFilename(),shopImg.getInputStream());
+                    se = shopService.modifyShop(shop,imageHolder);
                 }
                 if (se.getState() == ShopStateEnum.SUCCESS.getState()){
                     map.put("success",true);
@@ -253,7 +255,8 @@ public class shopManagementController {
             shop.setOwner(owner);
             ShopExecution se = null;
             try {
-                se = shopService.addShop(shop,shopImg.getInputStream(),shopImg.getOriginalFilename());
+                ImageHolder imageHolder = new ImageHolder(shopImg.getOriginalFilename(),shopImg.getInputStream());
+                se = shopService.addShop(shop,imageHolder);
                 if (se.getState() == ShopStateEnum.CHECK.getState()){
                     map.put("success",true);
                 }else{
