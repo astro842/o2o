@@ -2,6 +2,7 @@ package com.astro.service;
 
 import com.astro.dto.ImageHolder;
 import com.astro.dto.ShopExecution;
+import com.astro.entity.Product;
 import com.astro.entity.Shop;
 
 import java.io.File;
@@ -21,5 +22,6 @@ public interface ShopService {
     ShopExecution modifyShop(Shop shop, ImageHolder imageHolder) throws IOException;
 
     ShopExecution addShop(Shop shop, ImageHolder imageHolder);
+
 
 }

@@ -10,5 +10,10 @@ import java.util.List;
  */
 public interface ProductImgDao {
 
+    //批量添加图片
     int batchInsertProductImg(List<ProductImg> productImgList);
+
+    int deleteProductImgByProductImg(long productId);
+
+    List<ProductImg> quertProductImgList(long productId);
 }

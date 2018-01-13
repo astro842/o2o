@@ -24,6 +24,23 @@ public class ProductDaoTest extends BaseTest {
     private ProductDao productDao;
 
     @Test
+    public void queryProductById() {
+        Product product = productDao.queryProductById(4l);
+        System.out.println(product);
+    }
+
+    @Test
+    public void updateProduct() {
+        Product product = new Product();
+        product.setPriority(111111111);
+        product.setProductId(4l);
+        Shop shop =new Shop();
+        shop.setShopId(41l);
+        product.setShop(shop);
+        productDao.updateProduct(product);
+    }
+
+    @Test
     public void insertProduct() throws Exception {
 
         Product product = new Product();
@@ -49,20 +66,20 @@ public class ProductDaoTest extends BaseTest {
 
     @Test
     public void queryProductList() throws Exception {
-        Product productCondition =new Product();
-        ProductCategory pc =new ProductCategory();
+        Product productCondition = new Product();
+        ProductCategory pc = new ProductCategory();
         productCondition.setProductCategory(pc);
         List<Product> products = productDao.queryProductList(productCondition, 0, 2);
         int i = productDao.queryProductCount(productCondition);
         System.out.println(products);
-        System.out.println("i="+i);
+        System.out.println("i=" + i);
     }
 
     @Test
-    public void updateProductCategoryToNull() throws Exception{
+    public void updateProductCategoryToNull() throws Exception {
 
         int i = productDao.updateProductCategoryToNull(1);
-        assertEquals(2,i);
+        assertEquals(2, i);
     }
 
 }

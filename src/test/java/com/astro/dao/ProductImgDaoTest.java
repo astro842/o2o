@@ -20,6 +20,12 @@ public class ProductImgDaoTest extends BaseTest{
     private ProductImgDao productImgDao;
 
     @Test
+    public void quertProductImgList(){
+        List<ProductImg> productImgList = productImgDao.quertProductImgList(4);
+        System.out.println(productImgList.size());
+    }
+
+    @Test
     public void batchInsertProductImg() throws Exception {
 
         ProductImg productImg1 = new ProductImg();
@@ -43,6 +49,13 @@ public class ProductImgDaoTest extends BaseTest{
 
         int i = productImgDao.batchInsertProductImg(productImgList);
         assertEquals(2,i);
+    }
+
+    @Test
+    public void deleteProductImgByProductImg(){
+        int i = productImgDao.deleteProductImgByProductImg(4);
+        assertEquals(2,i);
+
     }
 
 }

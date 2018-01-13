@@ -28,9 +28,14 @@ public class shopAdminController {
     @RequestMapping("/shopmanagement")
     public String shopManagement(){return "shop/shopmanage";
     }
-    //类别管理页面
+    //商品类别管理页面
     @GetMapping("/productcategorymanagement")
     public String productCategoryManage(){
         return "shop/productcategorymanage";
+    }
+    //商品添加 编辑页面
+    @RequestMapping("/productoperation")
+    public String productOperation(){
+        return "shop/productoperation";
     }
 }

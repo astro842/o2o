@@ -20,4 +20,8 @@ public interface ProductService {
 
     Product getProductById(long productId);
 
+    ProductExcution modifyProduct(Product product, ImageHolder thumbnail, List<ImageHolder> productImgNameList) throws ProductOperationException, IOException;
+
+
+
 }

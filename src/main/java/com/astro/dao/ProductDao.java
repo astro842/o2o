@@ -19,4 +19,8 @@ public interface ProductDao {
     int queryProductCount(@Param("productCondition") Product productCondition);
     //删除productCategory时， 把关联的product的 category更新为null
     int updateProductCategoryToNull(long productCategoryId);
+
+    Product queryProductById(long productId);
+
+    int updateProduct(Product product);
 }

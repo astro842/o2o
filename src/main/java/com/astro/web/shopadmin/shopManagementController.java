@@ -54,6 +54,7 @@ public class shopManagementController {
         long shopId = HttpServletRequestUtil.getLong(request,"shopId");
         if (shopId <= 0){
             Object currentShop = request.getSession().getAttribute("currentShop");
+            log.info("===========================currentShop已经设置==============================shopId:"+shopId);
             if (currentShop == null){
                 map.put("redirect",true);
                 map.put("url","/shopadmin/shoplist");
@@ -66,6 +67,7 @@ public class shopManagementController {
             Shop shop = new Shop();
             shop.setShopId(shopId);
             request.getSession().setAttribute("currentShop",shop);
+            log.info("===========================currentShop已经设置==============================shopId:"+shop.getShopId());
             map.put("redirect",false);
         }
           return map;

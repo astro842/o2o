@@ -30,9 +30,9 @@ public class ProductCategoryManagementController {
     @ResponseBody
     public Result<List<ProductCategory>> getProductCategoryList(HttpServletRequest request){
          //To be remove
-        Shop shop = new Shop();
-        shop.setShopId(5L);
-        request.getSession().setAttribute("currentShop",shop);
+//        Shop shop = new Shop();
+//        shop.setShopId(5L);
+//        request.getSession().setAttribute("currentShop",shop);
 
         Shop currentShop =(Shop) request.getSession().getAttribute("currentShop");
         List<ProductCategory> productCategoryList = null;
