@@ -12,6 +12,7 @@ import com.astro.service.ProductService;
 import com.astro.util.ImageUtil;
 import com.astro.util.PageCalculator;
 import com.astro.util.PathUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.List;
  * Created by astro on 2018/1/9.
  */
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -122,12 +124,20 @@ public class ProductServiceImpl implements ProductService {
     public ProductExcution getProductList(Product productCondition, int pageIndex, int pageSize) {
 
         int rowIndex = PageCalculator.caltulateRowIdex(pageIndex, pageSize);
-        List<Product> productList = productDao.queryProductList(productCondition, rowIndex, pageSize);
-        int count = productDao.queryProductCount(productCondition);
-        ProductExcution pe = new ProductExcution();
-        pe.setProductList(productList);
-        pe.setCount(count);
-        return pe;
+        try {
+            log.info("productCondition:"+productCondition.getShop().getShopId());
+            log.info("productCondition:"+productCondition);
+            List<Product> productList = productDao.queryProductList(productCondition, rowIndex, pageSize);
+            int count = productDao.queryProductCount(productCondition);
+            ProductExcution pe = new ProductExcution();
+            pe.setProductList(productList);
+            pe.setCount(count);
+            return pe;
+        }catch (Exception e){
+            throw new ProductOperationException("product查询错误:"+e.toString());
+
+        }
+
     }
 
 

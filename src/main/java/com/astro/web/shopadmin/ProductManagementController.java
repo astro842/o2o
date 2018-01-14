@@ -1,5 +1,6 @@
 package com.astro.web.shopadmin;
 
+import com.astro.dao.ProductDao;
 import com.astro.dto.ImageHolder;
 import com.astro.dto.ProductExcution;
 import com.astro.entity.Product;
@@ -7,15 +8,14 @@ import com.astro.entity.ProductCategory;
 import com.astro.entity.ProductImg;
 import com.astro.entity.Shop;
 import com.astro.enums.ProductStateEnum;
+import com.astro.service.ProductCategoryService;
 import com.astro.service.ProductService;
 import com.astro.util.HttpServletRequestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.nashorn.internal.runtime.ECMAException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -38,19 +38,37 @@ public class ProductManagementController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ProductCategoryService productCategoryService;
 
+    @GetMapping("getproductbyid")
+    @ResponseBody
+    public Map<String, Object> getProductById(@RequestParam long productId) {
+        Map<String, Object> map = new HashMap<>();
+        if (productId > 0) {
+            Product product = productService.getProductById(productId);
+            List<ProductCategory> productCategoryList = productCategoryService.getProductCategoryList(product.getShop().getShopId());
+            map.put("success", true);
+            map.put("product", product);
+            map.put("productCategoryList", productCategoryList);
+        } else {
+            map.put("success", false);
+            map.put("errMsg", "get product by id 错误");
+        }
+        return map;
+    }
 
-    @PostMapping("/modifyProduct")
+    @PostMapping("/modifyproduct")
     @ResponseBody
     public Map<String, Object> modifyProduct(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         //用Jackson接收前端传来的信息
         ObjectMapper mapper = new ObjectMapper();
         Product product = null;
-        ImageHolder thumbnail=null;
-        List<ImageHolder> productImgList =new ArrayList<>();
+        ImageHolder thumbnail = null;
+        List<ImageHolder> productImgList = new ArrayList<>();
         //MultipartHttpServletRequest multipartrequest = null;
-        CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
                 request.getSession().getServletContext()
         );
         //若request中有文件流 这取出
@@ -59,7 +77,7 @@ public class ProductManagementController {
                 MultipartHttpServletRequest multipartrequest = (MultipartHttpServletRequest) request;
                 //取出缩略图
                 CommonsMultipartFile thumbnailFile = (CommonsMultipartFile) multipartrequest.getFile("thumbnail");
-                if (thumbnailFile!=null) {
+                if (thumbnailFile != null) {
                     thumbnail = new ImageHolder(thumbnailFile.getOriginalFilename(), thumbnailFile.getInputStream());
                 }
                 //取出详情图
@@ -79,32 +97,32 @@ public class ProductManagementController {
             return map;
         }
         try {
-            String productStr = HttpServletRequestUtil.getString(request,"productStr");
-            product=mapper.readValue(productStr,Product.class);
-        }catch (Exception e){
-            map.put("success",false);
-            map.put("errMsg",e.toString());
+            String productStr = HttpServletRequestUtil.getString(request, "productStr");
+            product = mapper.readValue(productStr, Product.class);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("errMsg", e.toString());
             return map;
         }
         //更新
-        if (product !=null){
+        if (product != null) {
             try {
-                Shop currentShop =(Shop) request.getSession().getAttribute("currentShop");
-                Shop shop =new Shop();
+                Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+                Shop shop = new Shop();
                 shop.setShopId(currentShop.getShopId());
                 product.setShop(shop);
                 ProductExcution pe = productService.modifyProduct(product, thumbnail, productImgList);
-                if (pe.getState()==ProductStateEnum.SUCCESS.getState()){
-                    map.put("success",true);
+                if (pe.getState() == ProductStateEnum.SUCCESS.getState()) {
+                    map.put("success", true);
                 }
-            }catch (Exception e){
-                map.put("success",false);
-                map.put("errMsg",e.toString());
+            } catch (Exception e) {
+                map.put("success", false);
+                map.put("errMsg", e.toString());
                 return map;
             }
-        }else {
-            map.put("success",false);
-            map.put("errMsg","请输入商品信息");
+        } else {
+            map.put("success", false);
+            map.put("errMsg", "请输入商品信息");
         }
 
 
@@ -128,7 +146,7 @@ public class ProductManagementController {
                 multipartrequest = (MultipartHttpServletRequest) request;
                 //取出缩略图
                 CommonsMultipartFile thumbnailFile = (CommonsMultipartFile) multipartrequest.getFile("thumbnail");
-                if (thumbnailFile!=null) {
+                if (thumbnailFile != null) {
                     thumbnail = new ImageHolder(thumbnailFile.getOriginalFilename(), thumbnailFile.getInputStream());
                 }
                 //取出详情图
@@ -216,11 +234,13 @@ public class ProductManagementController {
         Shop shop = new Shop();
         shop.setShopId(shopId);
         productCondition.setShop(shop);
+        //若有指定类别 则添加进行 查询
         if (productCategoryId != -1l) {
             ProductCategory productCategory = new ProductCategory();
             productCategory.setProductCategoryId(productCategoryId);
             productCondition.setProductCategory(productCategory);
         }
+        //若有 商品名字 则添加进行 模糊查询
         if (productName != null) {
             productCondition.setProductName(productName);
         }

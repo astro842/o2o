@@ -11,6 +11,7 @@ $(function () {
 
     var isEdit = false;
     if (productId){
+
         getInfo(productId);
         isEdit =true;
     }else {
