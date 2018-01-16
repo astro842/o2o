@@ -1,0 +1,19 @@
+package com.astro.web.frontend;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * Created by astro on 2018/1/16.
+ */
+@Controller
+@RequestMapping("/frontend")
+public class FrontendController {
+
+    @GetMapping("/index")
+    public String index(){
+        return "frontend/index";
+    }
+
+}
