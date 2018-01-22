@@ -16,6 +16,7 @@ public class ShopCategory {
     private Integer priority;
     private Date createTime;
     private Date lastEditTime;
+
     private ShopCategory parent;
 
 

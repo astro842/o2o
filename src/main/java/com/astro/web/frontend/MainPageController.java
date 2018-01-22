@@ -5,6 +5,7 @@ import com.astro.entity.HeadLine;
 import com.astro.entity.ShopCategory;
 import com.astro.service.HeadLineService;
 import com.astro.service.ShopCategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/frontend")
+@Slf4j
 public class MainPageController {
 
     @Autowired
@@ -34,6 +36,7 @@ public class MainPageController {
         Map<String,Object> map=new HashMap<>();
         List<ShopCategory> shopCategoryList =new ArrayList<>();
         try {
+            //商店类别 一级
              shopCategoryList = shopCategoryService.getShopCategoruList(null);
              map.put("shopCategoryList",shopCategoryList);
         }catch (Exception e){
@@ -47,6 +50,7 @@ public class MainPageController {
             HeadLine headLine =new HeadLine();
             headLine.setEnableStatus(1);
             headLineList=  headLineService.getHeadLineList(headLine);
+            log.info("headLineList:"+headLineList);
             map.put("headLineList",headLineList);
         }catch (Exception e){
             map.put("success",false);

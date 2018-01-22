@@ -9,7 +9,9 @@ $(function () {
         if (data.success) {
             var headLineList = data.headLineList;
             var swiperHtml = '';
+            console.log(headLineList);
             headLineList.map(function (item, index) {
+                console.log(item.linkImg);
                 swiperHtml += ''
                     + '<div class="swiper-slide img-wrap">'
                     +      '<img class="banner-img" src="'+ item.lineImg +'" alt="'+ item.lineName +'">'

@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/frontend")
 public class FrontendController {
 
+
+    @GetMapping("/shopList")
+    public String shopList(){
+        return "frontend/shoplist";
+    }
+
+
     @GetMapping("/index")
     public String index(){
         return "frontend/index";

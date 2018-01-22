@@ -13,7 +13,7 @@ public class HeadLine {
     private Long LineId;
     private String lineName;
     private String lineLink;
-    private String linkImg;
+    private String lineImg;
     private Integer priority;
     //0：不可用 1：可用
     private Integer enableStatus;

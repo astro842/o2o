@@ -24,11 +24,11 @@ $(function () {
                $('#shopAddr').val(shop.shopAddr);
                $('#shopDesc').val(shop.shopDesc);
                $('#shopPhone').val(shop.phone);
-               var shopCategory = '<option dao-id = "' + shop.shopCategory.shopCategoryId + '" selected>'
+               var shopCategory = '<option data-id = "' + shop.shopCategory.shopCategoryId + '" selected>'
                    + shop.shopCategory.shopCategoryName + '</option>';
                var tempArea = '';
                data.areaList.map(function (item, index) {
-                   tempArea += '<option dao-id="' + item.areaId + '">'
+                   tempArea += '<option data-id="' + item.areaId + '">'
                        + item.areaName + '</option>';
                });
                $('#shopCategory').html(shopCategory);
@@ -47,11 +47,11 @@ $(function () {
                 var tempHtml = '';
                 var tempAreaHtml = '';
                 data.shopCategoryList.map(function (item, index) {
-                    tempHtml += '<option dao-id="' + item.shopCategoryId + '">'
+                    tempHtml += '<option data-id="' + item.shopCategoryId + '">'
                         + item.shopCategoryName + '</option>';
                 });
                 data.areaList.map(function (item, index) {
-                    tempAreaHtml += '<option dao-id="' + item.areaId + '">'
+                    tempAreaHtml += '<option data-id="' + item.areaId + '">'
                         + item.areaName + '</option>';
                 });
                 //alert(tempHtml);
