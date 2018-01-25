@@ -99,7 +99,7 @@ $(function () {
 
     $('.shop-list').on('click', '.card', function (e) {
         var shopId = e.currentTarget.dataset.shopId;
-        window.location.href = '/myo2o/frontend/shopdetail?shopId=' + shopId;
+        window.location.href = '/frontend/shopdetail?shopId=' + shopId;
     });
 
     $('#shoplist-search-div').on(
