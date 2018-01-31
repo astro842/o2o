@@ -43,17 +43,7 @@ public class ShopServiceImplTest extends BaseTest{
 
     }
 
-    @Test
-    public void modifyShop()throws Exception{
-        Long id = 41L;
-        Shop shop = shopService.queryShopById(id);
-        shop.setShopName("修改了的shopName");
-        File shopImg = new File("E:/upload/o2o/p2.jpg");
-        InputStream is = new FileInputStream(shopImg);
-        ImageHolder imageHolder = new ImageHolder(shopImg.getName(),is);
-        ShopExecution shopExecution = shopService.modifyShop(shop,imageHolder);
-        System.out.println(shopExecution.getShop().toString());
-    }
+
 
     @Test
     public void addShop() throws FileNotFoundException {

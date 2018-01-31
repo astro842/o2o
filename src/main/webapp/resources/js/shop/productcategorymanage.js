@@ -2,9 +2,9 @@
  * Created by astro on 2018/1/6.
  */
 $(function () {
-    var listUrl = '/shopadmin/getproductcategorylist';
-    var addUrl = '/shopadmin/addproductcategorys';
-    var deleteURL = '/shopadmin/removeproductcategory';
+    var listUrl = '/o2o/shopadmin/getproductcategorylist';
+    var addUrl = '/o2o/shopadmin/addproductcategorys';
+    var deleteURL = '/o2o/shopadmin/removeproductcategory';
 
 
     getList();

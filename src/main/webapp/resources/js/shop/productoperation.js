@@ -4,10 +4,10 @@
 $(function () {
 
     var productId = getQueryString("productId");
-    var infoUrl = '/shopadmin/getproductbyid?productId=' + productId;
+    var infoUrl = '/o2o/shopadmin/getproductbyid?productId=' + productId;
     //获取当前商店的商品类别
-    var categoryUrl = '/shopadmin/getproductcategorylist';
-    var productPostUrl = '/shopadmin/modifyproduct';
+    var categoryUrl = '/o2o/shopadmin/getproductcategorylist';
+    var productPostUrl = '/o2o/shopadmin/modifyproduct';
 
     var isEdit = false;
     if (productId){
@@ -16,7 +16,7 @@ $(function () {
         isEdit =true;
     }else {
         getCategory();
-        productPostUrl='/shopadmin/addproduct';
+        productPostUrl='/o2o/shopadmin/addproduct';
     }
 
     //有productId 进入编辑 获取product信息

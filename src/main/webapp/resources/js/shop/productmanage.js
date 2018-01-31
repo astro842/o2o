@@ -2,8 +2,8 @@
  * Created by astro on 2018/1/10.
  */
 $(function () {
-    var listUrl = "/shopadmin/getproductlistbyshop?pageIndex=1&pageSize=999";
-    var statusUrl = '/shopadmin/modifyproduct';
+    var listUrl = "/o2o/shopadmin/getproductlistbyshop?pageIndex=1&pageSize=999";
+    var statusUrl = '/o2o/shopadmin/modifyproduct';
     getList();
     function getList() {
 
@@ -56,12 +56,12 @@ $(function () {
     $('.product-wrap').on('click', 'a', function (e) {
         var target = $(e.currentTarget);
         if (target.hasClass('edit')) {
-            window.location.href = '/shopadmin/productoperation?productId=' + e.currentTarget.dataset.id;
+            window.location.href = '/o2o/shopadmin/productoperation?productId=' + e.currentTarget.dataset.id;
         } else if (target.hasClass('status')) {
             changeItemStatus(e.currentTarget.dataset.id,
             e.currentTarget.dataset.status);
         } else if (target.hasClass('preview')) {
-            // window.location.href='/shopadmin/productopertion?productId='+e.currentTarget.dataset.id;
+            // window.location.href='/o2o/shopadmin/productopertion?productId='+e.currentTarget.dataset.id;
         }
     });
 

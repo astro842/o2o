@@ -3,7 +3,7 @@
  */
 $(function () {
 
-    var url = '/frontend/listmainpageinfo';
+    var url = '/o2o/frontend/listmainpageinfo';
 
     $.getJSON(url, function (data) {
         if (data.success) {
@@ -19,7 +19,7 @@ $(function () {
             });
             $('.swiper-wrapper').html(swiperHtml);
             $(".swiper-container").swiper({
-                autoplay: 1000,
+                autoplay: 2000,
                 autoplayDisableOnInteraction: false
             });
             var shopCategoryList = data.shopCategoryList;
@@ -47,7 +47,7 @@ $(function () {
 
     $('.row').on('click', '.shop-classify', function (e) {
         var shopCategoryId = e.currentTarget.dataset.category;
-        var newUrl = '/frontend/shoplist?parentId=' + shopCategoryId;
+        var newUrl = '/o2o/frontend/shoplist?parentId=' + shopCategoryId;
         window.location.href = newUrl;
     });
 
