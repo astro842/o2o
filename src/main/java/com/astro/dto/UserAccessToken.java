@@ -1,5 +1,6 @@
-package com.astro.util.wechat.message.pojo;
+package com.astro.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -8,14 +9,15 @@ import lombok.Data;
 @Data
 public class UserAccessToken {
 
+    @JsonProperty("access_token")
     private String accessToken;
-
+    @JsonProperty("expires_in")
     private String expiresIn;
-
+    @JsonProperty("refresh_token")
     private String refreshToken;
-
+    @JsonProperty("openid")
     private String openId;
-
+    @JsonProperty("scope")
     private String scope;
 
     @Override

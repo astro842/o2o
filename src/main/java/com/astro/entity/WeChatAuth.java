@@ -1,47 +1,19 @@
 package com.astro.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * Created by astro on 2017/12/19.
  */
-
+@Data
 public class WeChatAuth {
 
-     private Long wechatAuthId;
+     private Long weChatAuthId;
      private String openId;
      private Date createTime;
      private PersonInfo personInfo;
 
-    public Long getWechatAuthId() {
-        return wechatAuthId;
-    }
 
-    public void setWechatAuthId(Long wechatAuthId) {
-        this.wechatAuthId = wechatAuthId;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public PersonInfo getPersonInfo() {
-        return personInfo;
-    }
-
-    public void setPersonInfo(PersonInfo personInfo) {
-        this.personInfo = personInfo;
-    }
 }

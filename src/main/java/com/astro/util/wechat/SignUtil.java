@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public class SignUtil {
 
-    private static String token="o2o";
+    private static String token="mo2o";
 
     public static boolean checkSignature(String signature,String timestamp,String nonce){
         String[] arr = new String[]{token,timestamp,nonce};

@@ -3,6 +3,7 @@ package com.astro.web.wechat;
 import com.astro.util.wechat.SignUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import java.io.PrintWriter;
 @Slf4j
 public class WeChatController {
 
+    @GetMapping
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         String signature = request.getParameter("signature");
