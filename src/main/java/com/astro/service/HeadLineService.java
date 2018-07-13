@@ -10,5 +10,6 @@ import java.util.List;
 public interface HeadLineService {
 
     List<HeadLine> getHeadLineList(HeadLine headLineCondition);
-    ///////
+
+    ///ddddddd
 }
