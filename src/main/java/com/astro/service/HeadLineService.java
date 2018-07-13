@@ -11,5 +11,6 @@ public interface HeadLineService {
 
     List<HeadLine> getHeadLineList(HeadLine headLineCondition);
 
-    ///ddddddd
+    ///dddddddsssssss
+    //new toooool
 }
